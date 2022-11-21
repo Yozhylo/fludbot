@@ -1,2 +1,4 @@
 node_modules
 config.json
+deploy-commands.js
+db_config.json
