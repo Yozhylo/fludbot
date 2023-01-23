@@ -1,6 +1,7 @@
 node_modules
 deploy-commands.js
 .*
+*config.json
 model.mdj
 *.jsb
 laptop
