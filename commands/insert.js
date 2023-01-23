@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, Locale, WebSocketManager, WebSocketShard, Attachment} = require("discord.js");
-const { insert } = require('../.data_base/db');
+const { insert } = require('../.data-base/db');
 
 // module.exports = {
 //   data: new SlashCommandBuilder()
@@ -14,16 +14,16 @@ const { insert } = require('../.data_base/db');
 //   await interaction.reply({content: 'String was inserted!', ephemeral: true});
 //   },
 // };
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('post')
-    .setDescription('posts attachment')
-    .addAttachmentOption( option =>
-      option.setName('Attachment')
-      .setRequired(true)
-      .setDescription('media')),
-      async execute(interaction) {
-        console.log(JSON.stringify(Attachment.url));
-        await interaction.reply('d');
-      },
-};
+// module.exports = {
+//   data: new SlashCommandBuilder()
+//     .setName('post')
+//     .setDescription('posts attachment')
+//     .addAttachmentOption( option =>
+//       option.setName('Attachment')
+//       .setRequired(true)
+//       .setDescription('media')),
+//       async execute(interaction) {
+//         console.log(JSON.stringify(Attachment.url));
+//         await interaction.reply('d');
+//       },
+// };
