@@ -1,8 +1,9 @@
 node_modules
 deploy-commands.js
-.*
 *config.json
 model.mdj
+.data-base/file-storage/*
+!.data-base/file-storage/.gitkeep
 *.jsb
 laptop
 laptop.pub

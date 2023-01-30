@@ -16,7 +16,7 @@ for (const file of commandFiles) {
 }
 
 client.once(Events.ClientReady, () => {
-	console.log('Ready!');
+	console.log(`Connected as ${client.user.username}`)
 });
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -30,7 +30,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		// await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
 
