@@ -6,7 +6,6 @@ module.exports = {
     #height;
 
     constructor(width, height) {
-      // this.name = setName()
       this.#width = width
       this.#height = height
     }
@@ -19,16 +18,16 @@ module.exports = {
     }
   },
   Extension: class {
-    #name
+    #format
     #mimeType
 
-    constructor(name, mimeType) {
-      this.#name = name;
+    constructor(format, mimeType) {
+      this.#format = format;
       this.#mimeType = mimeType;
     }
 
-    get name() {
-      return this.#name;
+    get format() {
+      return this.#format;
     }
     get mimeType() {
       return this.#mimeType;
@@ -36,24 +35,26 @@ module.exports = {
   },
   Media: class {
     #name
-    #description
     #resolution
+    #extension
 
-    constructor(nickname, name, description, resolution) {
+    constructor(nickname, name, description, resolution, extension) {
       this.nickname = nickname;
+      // this.description = description;
+      description.replace(/\s/g,'') === '' ? this.description : this.description = description;
       this.#name = name;
-      this.#description = description;
       this.#resolution = resolution;
+      this.#extension = extension;
     }
 
     get name() {
       return this.#name
     }
-    get description() {
-      return this.#description
-    }
     get resolution() {
       return this.#resolution
+    }
+    get extension() {
+      return this.#extension
     }
   }
 }
