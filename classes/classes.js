@@ -1,5 +1,8 @@
 // const insert = require('../commands/insert')
 
+const { DB } = require('./db.js');
+const credentials = require('../.data-base/config.json')
+
 module.exports = {
   Resolution: class {
     #width;
@@ -14,7 +17,7 @@ module.exports = {
       return this.#width;
     }
     get height() {
-      return this.#width;
+      return this.#height;
     }
   },
   Extension: class {
@@ -37,14 +40,16 @@ module.exports = {
     #name
     #resolution
     #extension
+    #reference
 
-    constructor(nickname, name, description, resolution, extension) {
+    constructor(reference, nickname, name, description, resolution, extension) {
       this.nickname = nickname;
-      // this.description = description;
-      description.replace(/\s/g,'') === '' ? this.description : this.description = description;
+      JSON.stringify(description).replace(/\s/g,'') === '' ? this.description : this.description = description;
+      JSON.stringify(resolution).replace(/\s/g,'') === '' ? this.#resolution : this.#resolution = resolution;
+      this.#extension = extension;
       this.#name = name;
       this.#resolution = resolution;
-      this.#extension = extension;
+      this.#reference = reference;
     }
 
     get name() {
@@ -55,6 +60,13 @@ module.exports = {
     }
     get extension() {
       return this.#extension
+    }
+    get reference() {
+      return this.#reference
+    }
+
+    set reference(newValue) {
+      this.#reference = newValue;
     }
   }
 }

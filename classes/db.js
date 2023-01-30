@@ -14,11 +14,30 @@ module.exports = {
       })
     }
     
-   insert(table, values) {
-      this.connection.query(`INSERT INTO ${table} VALUES(${JSON.stringify(values)})`);    
-    }
-    // retrieve();
+   async insert(fileReference, fileName, fileNick, fileDescription, fileFormat) {
+    let query = `
+      INSERT INTO file(fk_extension_id, Source, Name, Nickname, Description)
+      SELECT id, '${fileReference}', '${fileName}', '${fileNick}', '${fileDescription}'
+      FROM extension
+      WHERE format = '${fileFormat}';`
 
+    this.connection.query(query, (err, result) => {
+      if(err) {
+        console.error(err)
+        return err;
+      }
+      else {
+        console.log(result);
+        console.log(`QUERY\n ${query}\n\n---\n`);
+        console.log(`Query finished!`);
+        return;
+      }
+    });    
+  }
+    // retrieve();
+    // show(table) {
+    
+    // }
     close() {
       this.connection.end();
     }
