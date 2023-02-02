@@ -16,7 +16,9 @@ module.exports = {
     .setDescription('The nickname of the file to be retrieved')),
     async execute(interaction) {
       await interaction.deferReply();
-
+      
+      //MAJOR ISSUE SOMEWHERE HERE! REFARCTOR
+      
       const db = new DB(credentials),
       fileNick = interaction.options.getString('file-nickname');
       // Hacky way of passing a callback
