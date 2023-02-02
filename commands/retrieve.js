@@ -28,24 +28,16 @@ module.exports = {
           throw err;
         }
         else if(result === undefined) interaction.editReply('Requested asset does not exist!');
-        // Retrieving data, based on DB
+        // Retrieving data from DB
         else {
           let fileDesc;
           result.Description === 'null' || '' || 'NULL' ? fileDesc = 'No description provided.' : fileDesc = result.Description;
           const file = path.join('.data-base','file-storage','/', result.Name + result.Format),
           media = new AttachmentBuilder(file),
-          // const embed = new EmbedBuilder()
-          //   .setTitle(`${fileNick}`)
-          //   .setImage(`attachment://${path.basename(file)}`)
-          //   .setDescription(`${result.Description}`);
           embed = new EmbedBuilder()
           .setTitle(`Nickname: ${fileNick}`)
-          // .setImage(`attachment://${path.basename(file)}`)
           .setDescription(`Description: ${fileDesc}`);
-          // await interaction.channel.send({ embeds: [embed], files: [media] });
-          // await interaction.channel.send({ embeds: [embed] });
-          // await interaction.channel.send( {files: [media]} );
-          // await interaction.followUp( {embeds: [embed]} );
+          
           await interaction.editReply( {content: 'File retrieved:', embeds: [embed]} );
           await interaction.followUp( {files: [media]} );
         }
