@@ -10,7 +10,7 @@ module.exports = {
       this.connection = mysql.createConnection(credentials);
       this.connection.connect( function(err) {
         if(err) throw err;
-        else console.log("Connected to the database on LOCALHOST!");
+        else console.log("Connected to the database");
       })
     }
     
@@ -23,8 +23,8 @@ module.exports = {
 
     this.connection.query(query, (err, result) => {
       if(err) {
-        console.error(err)
-        return err;
+        console.error(err);
+        throw err;
       }
       else {
         console.log(result);
@@ -34,12 +34,24 @@ module.exports = {
       }
     });    
   }
-    // retrieve();
-    // show(table) {
-    
-    // }
-    close() {
+  async retrieve(fileNick, callback) {
+    let query = `SELECT \`file\`.Name, Format, \`file\`.Description
+                FROM file INNER JOIN extension
+                WHERE fk_extension_id = \`extension\`.id AND Nickname = '${fileNick}';`;
+
+    this.connection.query(query, (err, result) => {
+      if(err) {
+        console.log(err)
+        return err;
+      }
+      else {
+        callback(err, result[0]);
+      }
+    })
+  }
+   async close() {
       this.connection.end();
+      console.log('Connection closed')
     }
   }
 }
