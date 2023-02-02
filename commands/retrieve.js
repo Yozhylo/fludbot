@@ -31,7 +31,7 @@ module.exports = {
         // Retrieving data, based on DB
         else {
           let fileDesc;
-          result.Description === 'null' || '' ? fileDesc = 'No description provided.' : fileDesc = result.Description;
+          result.Description === 'null' || '' || 'NULL' ? fileDesc = 'No description provided.' : fileDesc = result.Description;
           const file = path.join('.data-base','file-storage','/', result.Name + result.Format),
           media = new AttachmentBuilder(file),
           // const embed = new EmbedBuilder()
