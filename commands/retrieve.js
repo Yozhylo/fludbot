@@ -4,7 +4,6 @@ const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discor
 
 const { DB } = require("../classes/db.js");
 const credentials = require("../.data-base/config.json");
-const { Media } = require('../classes/classes.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,13 +16,11 @@ module.exports = {
     async execute(interaction) {
       await interaction.deferReply();
       
-      //MAJOR ISSUE SOMEWHERE HERE! REFARCTOR
-      
-      const db = new DB(credentials),
+      const DATABASE = new DB(credentials),
       fileNick = interaction.options.getString('file-nickname');
       // Hacky way of passing a callback
       // !!!MOVE TO FUNCTION LATER!!!
-      db.retrieve(fileNick, async (err, result) => {
+      DATABASE.retrieve(fileNick, async (err, result) => {
         // Checking for errors and for empty set
         if(err) {
           console.error(err)
@@ -34,17 +31,17 @@ module.exports = {
         else {
           let fileDesc;
           result.Description === 'null' || '' || 'NULL' ? fileDesc = 'No description provided.' : fileDesc = result.Description;
-          const file = path.join('.data-base','file-storage','/', result.Name + result.Format),
-          media = new AttachmentBuilder(file),
-          embed = new EmbedBuilder()
+          const FILE = path.join('.data-base','file-storage','/', result.Name + result.Format),
+          MEDIA = new AttachmentBuilder(FILE),
+          EMBED = new EmbedBuilder()
           .setTitle(`Nickname: ${fileNick}`)
           .setDescription(`Description: ${fileDesc}`);
           
-          await interaction.editReply( {content: 'File retrieved:', embeds: [embed]} );
-          await interaction.followUp( {files: [media]} );
+          await interaction.editReply( {content: 'File retrieved:', embeds: [EMBED]} );
+          // Only follows up, if internet connection is stable
+          await interaction.followUp( {files: [MEDIA]} );
         }
       });
-      await db.close();
-
+      await DATABASE.close();
   }
 }
