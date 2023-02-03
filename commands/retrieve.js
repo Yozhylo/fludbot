@@ -3,7 +3,7 @@ const path = require('path');
 const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js');
 
 const { DB } = require("../classes/db.js");
-const credentials = require("../.data-base/config.json");
+const CREDENTIALS = require("../.data-base/config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,7 +16,7 @@ module.exports = {
     async execute(interaction) {
       await interaction.deferReply();
       
-      const DATABASE = new DB(credentials),
+      const DATABASE = new DB(CREDENTIALS),
       fileNick = interaction.options.getString('file-nickname');
       // Hacky way of passing a callback
       // !!!MOVE TO FUNCTION LATER!!!
