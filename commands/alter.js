@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { DB } = require('../classes/db.js');
 const CREDENTIALS = require('../.data-base/config.json');
 
@@ -45,25 +45,32 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply();
     // Conveniece args
-    const opts = interaction.options;
-    const ARGS = [];
+    const OPTS = interaction.options,
+    ARGS = [];
     
     // Switch for subcommand distinction
     switch (interaction.options.getSubcommand()) {
       case 'nickname':
-        ARGS.push('Nickname', opts.getString('current'), opts.getString('desired'));
+        ARGS.push('Nickname', OPTS.getString('current'), OPTS.getString('desired'));
       break;
 
       case 'description':
-        ARGS.push('Description', opts.getString('nickname'), opts.getString('desired'));
+        ARGS.push('Description', OPTS.getString('nickname'), OPTS.getString('desired'));
       break;
         
       default:
         await interaction.editReply('A horrific accident has occured');
       break;
     }
-
-    const DATABASE = new DB(CREDENTIALS);
+    
+    const DATABASE = new DB(CREDENTIALS),
+    EMBED = new EmbedBuilder()
+    .setTitle('Alter command result')
+    .addFields(
+      {name: 'Column that was updated:', value: `${ARGS[0]}`},
+      {name: 'Identifier:', value: `${ARGS[1]}`, inline: true},
+      {name: 'New value:', value: `${ARGS[2]}`, inline: true}
+    );
     // Sending args to alter function
     // Callback checks if something was changed and replies
     await DATABASE.alter(ARGS[0], ARGS[1], ARGS[2], (err, result) => {
@@ -75,7 +82,7 @@ module.exports = {
       } else {
         // Embed needed
         console.log(err, result);
-        interaction.editReply('MAKE AN EMBED HERE')
+        interaction.editReply({ embeds: [EMBED] })
       }
     })
     await DATABASE.close();
