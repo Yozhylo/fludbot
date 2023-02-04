@@ -49,6 +49,18 @@ module.exports = {
       }
     })
   }
+  async retrieveAll(callback) {
+    const QUERY = 'SELECT Nickname, Description FROM file';
+
+    this.connection.query(QUERY, (err, result) => {
+      if(err) {
+        console.log(err);
+        return err;
+      } else {
+        callback(err, result);
+      }
+    });
+  }
   async alter(column, identifierValue, modifiedValue, callback) {
     const QUERY = `UPDATE file
                   SET ${column} = '${modifiedValue}'
