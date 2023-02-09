@@ -14,7 +14,7 @@ module.exports = {
       })
     }
     
-   async insert(fileReference, fileName, fileNick, fileDescription, fileFormat) {
+    async insert(fileReference, fileName, fileNick, fileDescription, fileFormat) {
     const QUERY = `
       INSERT INTO file(fk_extension_id, Source, Name, Nickname, Description)
       SELECT id, '${fileReference}', '${fileName}', '${fileNick}', '${fileDescription}'
@@ -34,38 +34,63 @@ module.exports = {
       }
     });    
   }
-  async retrieve(fileNick, callback) {
-    const QUERY = `SELECT \`file\`.Name, Format, \`file\`.Description
-                FROM file INNER JOIN extension
-                WHERE fk_extension_id = \`extension\`.id AND Nickname = '${fileNick}';`;
+    async retrieve(fileNick, callback) {
+      const QUERY = `SELECT \`file\`.Name, Format, \`file\`.Description
+                  FROM file INNER JOIN extension
+                  WHERE fk_extension_id = \`extension\`.id AND Nickname = '${fileNick}';`;
 
-    this.connection.query(QUERY, (err, result) => {
-      if(err) {
-        console.log(err)
-        return err;
-      }
-      else {
-        callback(err, result[0]);
-      }
-    })
-  }
-  async alter(column, identifierValue, modifiedValue, callback) {
-    const QUERY = `UPDATE file
-                  SET ${column} = '${modifiedValue}'
-                  WHERE Nickname = '${identifierValue}'`;
-    this.connection.query(QUERY, (err, result) => {
-      if(err) {
-        console.error(err);
-        throw err;
-      } else {
-        console.log(result)
-        callback(err, result.affectedRows)
-      }
-    })
-  }
-   async close() {
-      this.connection.end();
-      console.log('Connection closed')
+      this.connection.query(QUERY, (err, result) => {
+        if(err) {
+          console.log(err)
+          return err;
+        }
+        else {
+          callback(err, result[0]);
+        }
+      })
+    }
+    async alter(column, identifierValue, modifiedValue, callback) {
+      const QUERY = `UPDATE file
+                    SET ${column} = '${modifiedValue}'
+                    WHERE Nickname = '${identifierValue}'`;
+      this.connection.query(QUERY, (err, result) => {
+        if(err) {
+          console.error(err);
+          throw err;
+        } else {
+          console.log(result)
+          callback(err, result.affectedRows)
+        }
+      })
+    }
+    async drop(fileNick, callback) {
+      const QUERY = `DELETE FROM file
+                    WHERE Nickname = '${fileNick}'`;
+      this.connection.query(QUERY, (err, result) => {
+        if(err) {
+          console.error(err);
+          throw err;
+        } else {
+          console.log(result.affectedRows)
+          // callback(null, 'huh');
+        }
+      })
+    }
+    // Executes callback, if the record is found
+    async executeIfExists(fileNick, callback) {
+      const QUERY = `SELECT 1 FROM file WHERE Nickname = '${fileNick}' TOP 1`;
+      this.connection.query(QUERY, (err, result) => {
+        if(err) {
+          console.error(err);
+          throw err;
+        } else {
+          callback(err, result[0]);
+        }
+      })
+    }
+    async close() {
+        this.connection.end();
+        console.log('Connection closed')
     }
   }
 }
