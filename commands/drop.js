@@ -16,7 +16,7 @@ module.exports = {
     .setRequired(true)),
     async execute(interaction) {
       await interaction.deferReply();
-
+      
       const DATABASE = new DB(CREDENTIALS);
       const fileNick = interaction.options.getString('file-nickname');
       //Check if file exists in the db
@@ -40,12 +40,13 @@ module.exports = {
               // DATABASE.drop()
               // }
               // })
-              //Delete file from disk
+              // Delete file from disk
               await deleteFile(err, FILE);
               //Remove records of file in database
-              await DATABASE.drop(fileNick);
-        }
-      });
-      // await DATABASE.close();
+              console.log('del');
+            }
+          });
+      await DATABASE.drop(fileNick);
+      await DATABASE.close();
   }
 }
