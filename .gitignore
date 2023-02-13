@@ -1,5 +1,4 @@
 node_modules
-deploy-commands.js
 *config.json
 model.mdj
 .data-base/file-storage/*
